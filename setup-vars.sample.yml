@@ -1,0 +1,7 @@
+activation_key: changeme
+org: changeme 
+destination_node_hostname: changeme
+backup_dir: /backup 
+pr_number: changeme 
+satellite_version: 6.2
+rhel_version: 7

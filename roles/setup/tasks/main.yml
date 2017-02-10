@@ -1,0 +1,54 @@
+- name: Check that mandatory variables are updated
+  fail: msg="Please update the variables in setup-vars.yml (after copying setup-vars.sample.yml)"
+  when: (activationkey == "changeme") or (org == "changeme") or (pr_number == "changeme")
+
+- name: install the latest version of Git and wget
+  yum:
+    name: git
+    state: latest
+
+- name: clone satellite-clone
+- git:
+    repo: https://github.com/RedHatSatellite/satellite-clone.git
+    dest: /satellite-clone
+    refspec: '+refs/pull/*:refs/heads/*'
+
+- name: chmod 755 helper scripts
+- file:
+    path: /satellite-clone/helpers
+    mode: 0755
+    recurse: yes
+
+- name: update setup script
+  command: sed -ie 's/RHEL_MAJOR_VERSION="0"/RHEL_MAJOR_VERSION="7"/g' /satellite-clone/helpers/control_node_setup.sh
+
+- name: run setup script
+  script: /satellite-clone/helpers/control_node_setup.sh
+
+- name: run reallocation script
+  script: /satellite-clone/helpers/reallocate.sh
+
+- name: copy sample vars files
+  copy:
+    src: /satellite-clone/satellite-clone-vars.sample.yml
+    dest: /satellite-clone/satellite-clone-vars.yml 
+  copy:
+    src: /satellite-clone/satellite-hostname-vars.sample.yml
+    dest: /satellite-clone/satellite-hostname-vars.yml 
+  copy:
+    src: /satellite-clone/inventory.sample
+    dest: /satellite-clone/inventory
+
+- name: update variable files
+  command: sed -ie '/^satellite_version:/s/6.2/{{ satellite_version }}/g' satellite-clone-vars.yml
+  command: sed -ie '/^activationkey:/s/changeme/{{ activation_key }}/g' satellite-clone-vars.yml
+  command: sed -ie '/^org:/s/changeme/{{ org }}/g' roles/sat6repro/vars/main.yml
+  command: printf "[satellite6]\n{{ destination_node_hostname }} ansible_connection=local" > inventory`
+
+- name: create backup directory
+  file: path=/backup state=directory
+  
+- name: get backup files
+  command: wget -r -np -nd {{ backup_dir }}
+  args:
+    chdir: /backup
