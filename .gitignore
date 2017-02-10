@@ -1,2 +1,5 @@
 setup-vars.yml
 inventory
+roles/setup/files/satellite-hostname-vars.yml
+roles/setup/files/satellite-clone-vars.yml
+*.retry

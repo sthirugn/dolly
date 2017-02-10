@@ -1,7 +1,3 @@
-activation_key: changeme
-org: changeme 
-destination_node_hostname: dell-per415-01.dsal.lab.eng.bos.redhat.com
-backup_dir: /backup
+public_backup_dir: changeme
 pr_number: changeme 
-satellite_version: 6.2
 rhel_version: 7

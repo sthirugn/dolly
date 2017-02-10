@@ -1,7 +1,4 @@
-activation_key: changeme
-org: changeme 
-destination_node_hostname: changeme
-backup_dir: /backup 
-pr_number: changeme 
-satellite_version: 6.2
+# an available backup directory to download backup files from
+public_backup_dir: changeme
 rhel_version: 7
+pr_number: changeme 
