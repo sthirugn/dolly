@@ -3,6 +3,9 @@
 
 For testing of [satellite-clone](https://github.com/RedHatSatellite/satellite-clone) 
 
+##Prerequisites##
+- A blank RHEL 7 machine that has access to yum repos, referred to as blank_testing_machine
+
 ##Quick Setup##
 1. `ssh-copy-id root@<blank_testing_machine>`
 2. `cp inventory.sample inventory` and update with the blank_testing_machine fqdn or ip

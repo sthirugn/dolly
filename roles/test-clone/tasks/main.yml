@@ -1,0 +1,4 @@
+- name: run satellite-clone playbook
+  command: ansible-playbook -i inventory satellite-clone-playbook.yml
+  args:
+    chdir: /satellite-clone

@@ -38,6 +38,11 @@
     dest: /satellite-clone
     refspec: '+refs/pull/*:refs/heads/*'
 
+- name: checkout PR branch
+  command: git checkout {{ pr_number }}/head
+  args:
+    chdir: /satellite-clone
+
 - name: chmod 755 helper scripts
   file:
     path: /satellite-clone/helpers
@@ -70,7 +75,10 @@
     remote_src: True
 
 - name: update inventory 
-  command: printf "[satellite6]\n{{ inventory_hostname }} ansible_connection=local" > inventory`
+  lineinfile:
+    dest: /satellite-clone/inventory
+    regexp: '^192\.168\.1\.100'
+    line: "{{ inventory_hostname }}"
 
 - name: create backup directory
   file: path=/backup state=directory
